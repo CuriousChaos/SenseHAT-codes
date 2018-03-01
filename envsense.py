@@ -3,7 +3,8 @@ import time, numpy, datetime
 
 # This script will graph and log the environment sensors.
 # Temp, Humidity, and Pressure.
-
+# Logs are the date, and then a squished-together time, like 231409 (11:14:09 PM)
+# The data in logs shows the exact time (down to millisecond) the data was captured and graphed.
 
 sense = SenseHat()
 sense.clear()
@@ -30,7 +31,7 @@ msecond=now.microsecond
 
 name = str(month) + "-" + str(day) + "-" + str(year) + "--" + str(hour) + str(minute) + str(second)
 f = open("/home/pi/Documents/" + name + ".log", 'w')
-f.write("Logging started at " + str(hour) + ":" + str(minute) + ":" + str(second) + " on " + str(day) + " of " + str(month) + ":" + str(day))
+f.write("Logging started at " + str(hour) + ":" + str(minute) + ":" + str(second) + " on " + str(month) + ":" + str(day) + ":" + str(year))
 f.close()
 def showMeters(number, noomber, nember):
 	dater = round(number,0) / 8
@@ -77,11 +78,6 @@ while True:
 	humidity = sense.get_humidity()
 	showMeters(humidity, temp, pressure)
 	time.sleep(.05)
-	f = open("/home/pi/Documents/" + name + ".log", 'a')
-	f.write('\n' + str(humidity))
-	f.write('\n' + str(temp))
-	f.write('\n' + str(pressure))
-	f.write('\n')
 	day=now.day
 	month=now.month
 	year=now.year
@@ -89,5 +85,10 @@ while True:
 	minute=now.minute
 	second=now.second
 	msecond=now.microsecond
+	f = open("/home/pi/Documents/" + name + ".log", 'a')
 	f.write('\n' + "Data at: " + str(hour) + ":" + str(minute) + ":" + str(second) + ":" + str(msecond))
+	f.write('\n' + "Humidity: " + str(humidity))
+	f.write('\n' + "Temperature: " + str(temp))
+	f.write('\n' + "Pressure: " + str(pressure))
+	f.write('\n')
 	f.close()
